@@ -37,13 +37,13 @@ function TestPage() {
       id: 'c2',
       content: 'c2',
       sort: 2,
-      type: ''
+      type: 'classification'
     },
     {
       id: 'c3',
       content: 'c3',
       sort: 3,
-      type: ''
+      type: 'carousel'
     },
   ]
   // 展示列表
