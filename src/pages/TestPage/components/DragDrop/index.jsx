@@ -109,7 +109,17 @@ function DragDrop(props) {
                                             }
                                           </Carousel>
                                         ) : item.type === 'classification' ? (
-                                          <div className={styles.classification}>123</div>
+                                          <div className={styles.classification}>
+                                            <div className={styles.test} />
+                                            <div className={styles.test} />
+                                            <div className={styles.test} />
+                                            <div className={styles.test} />
+                                            <div className={styles.test} />
+                                            <div className={styles.test} />
+                                            <div className={styles.test} />
+                                            <div className={styles.test} />
+                                            <div className={styles.test} />
+                                          </div>
                                         ) : (
                                           <div>{item.content}</div>
                                         )
