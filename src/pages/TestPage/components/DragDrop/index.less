@@ -1,0 +1,35 @@
+.configContent {
+  width: 297px;
+  height: 610.5px;
+  display: flex;
+  margin: 10px 0;
+  border: 3px solid #000;
+  //border-top: 6px solid #000;
+  //border-bottom: 6px solid #000;
+  //border-radius: 20px;
+
+  .componentContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &:nth-child(n) {
+      margin-bottom: 5px;
+    }
+
+    .classification {
+      width: 100%;
+      height: 100px;
+      background-color: red;
+      border-top: 1px solid #0d5aa7;
+      display: flex;
+      //justify-content: space-between;
+
+      .test {
+        width: 20px;
+        height: 20px;
+        background-color: yellow;
+      }
+    }
+  }
+}
