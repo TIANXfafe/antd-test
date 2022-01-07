@@ -1,5 +1,5 @@
 import React from 'react';
-import { Carousel, Col } from 'antd';
+import { Carousel, Col, Image } from 'antd';
 import PropTypes from 'prop-types';
 import styles from './index.less';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
@@ -88,6 +88,13 @@ function DragDrop(props) {
                                     <div className={styles.test} />
                                     <div className={styles.test} />
                                   </div>
+                                ) : item.type === 'picture' ? (
+                                  <Image
+                                    width={291}
+                                    height={150}
+                                    preview={false}
+                                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                                  />
                                 ) : (
                                   <div>{item.content}</div>
                                 )}
