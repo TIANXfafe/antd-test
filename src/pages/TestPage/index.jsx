@@ -42,12 +42,6 @@ function TestPage() {
     {
       id: 'c3',
       content: 'c3',
-      sort: 3,
-      type: 'carousel',
-    },
-    {
-      id: 'c4',
-      content: 'c4',
       sort: 4,
       type: 'picture',
     },

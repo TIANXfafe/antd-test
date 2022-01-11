@@ -1,5 +1,6 @@
 import React from 'react';
 import { Carousel, Col, Image } from 'antd';
+import { AreaChartOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import styles from './index.less';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
@@ -35,8 +36,37 @@ function DragDrop(props) {
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
+                                className={styles.componentContent}
                               >
-                                {item.content}
+                                {item.type === 'carousel' ? (
+                                  <ComponentCarousel
+                                    style={{ width: '291px', height: '150px' }}
+                                    carouseData={props.carouseData}
+                                    contentStyle={contentStyle}
+                                  />
+                                ) : item.type === 'classification' ? (
+                                  <div className={styles.classification}>
+                                    <div className={styles.test} />
+                                    <div className={styles.test} />
+                                    <div className={styles.test} />
+                                    <div className={styles.test} />
+                                    <div className={styles.test} />
+                                    <div className={styles.test} />
+                                    <div className={styles.test} />
+                                    <div className={styles.test} />
+                                    <div className={styles.test} />
+                                    <div className={styles.test} />
+                                  </div>
+                                ) : item.type === 'picture' ? (
+                                  <Image
+                                    width={291}
+                                    height={150}
+                                    preview={false}
+                                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                                  />
+                                ) : (
+                                  <div>{item.content}</div>
+                                )}
                               </div>
                             );
                           }}
