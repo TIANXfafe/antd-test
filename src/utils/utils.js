@@ -1,7 +1,9 @@
+import { useLayoutEffect, useState } from 'react';
+
 /**
  * 随机生成uuid
  */
-function uuid() {
+export default function uuid() {
   const s = [];
   const hexDigits = '0123456789abcdef';
   for (let i = 0; i < 36; i++) {
@@ -12,4 +14,20 @@ function uuid() {
   s[8] = s[13] = s[18] = s[23] = '-';
   const uuid = s.join('');
   return uuid;
+}
+
+/**
+ * 监听视窗宽度变化
+ */
+export function useWindowSize() {
+  const [size, setSize] = useState([0, 0]);
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+  return size;
 }

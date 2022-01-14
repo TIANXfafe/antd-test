@@ -138,7 +138,6 @@ function TestPage() {
         finalItem.droppableId === 'droppable2'
       ) {
         const moveItem = libraryList.splice(initialItem.index, 1);
-        console.log('moveItem', moveItem);
         display.splice(finalItem.index, 0, moveItem[0]);
         setComponentLibrary(libraryList);
         setDisplayComponent(display);

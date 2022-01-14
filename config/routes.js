@@ -53,7 +53,13 @@ export default [
         icon: 'smile',
         component: './TestPage',
       },
-    ]
+    ],
+  },
+  {
+    path: '/template',
+    name: 'template',
+    icon: 'crown',
+    component: './Template',
   },
   {
     name: 'list.table-list',
