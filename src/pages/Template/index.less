@@ -1,27 +1,115 @@
+.titleContainer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  .titleContent {
+    margin-bottom: 10px;
+
+    .searchTitle {
+      font-size: 0.9rem;
+    }
+  }
+}
+
 .templateContainer {
   position: relative;
   //background-color: red;
   width: 100%;
-  height: 200px;
   padding: 1%;
 
   .templateItem {
+    //background-color: greenyellow;
+    position: relative;
+    display: block;
     width: 100%;
     height: 100%;
-    background-color: greenyellow;
-    &::after {
+    overflow: hidden;
+    border: 1px solid #ececec;
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px #2a2a2a;
+
+    &::before {
       position: absolute;
-      top: 49%;
-      left: 49%;
-      display: block;
-      width: 2%;
-      height: 2%;
-      background-color: rgba(0, 0, 0, 0.5);
+      top: 0;
+      left: 50%;
+      width: 0;
+      height: 100%;
+      padding: 14px 18px;
+      background-color: #000;
+      opacity: 0;
+      transition: all 500ms cubic-bezier(0.47, 0, 0.745, 0.715) 0s;
       content: '';
     }
+
+    &:hover::before {
+      left: 0;
+      width: 100%;
+      opacity: 0.5;
+    }
+
     img {
       width: 100%;
+      height: 90%;
+      border-radius: 10px;
+      transition: all 500ms cubic-bezier(0.47, 0, 0.745, 0.715) 0s;
+    }
+
+    &:hover img {
       height: 100%;
+    }
+
+    .mask {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 10%;
+      color: #fff;
+      transition: all 500ms cubic-bezier(0.47, 0, 0.745, 0.715) 0s;
+
+      .title {
+        width: 80%;
+        margin: 0 auto;
+        overflow: hidden;
+        color: #000;
+        font-size: 0.9rem;
+        line-height: 30px;
+        white-space: nowrap;
+        text-align: center;
+        text-transform: uppercase;
+        text-overflow: ellipsis;
+        transition: all 0.5s ease 0s;
+      }
+
+      .post {
+        width: 80%;
+        margin: 0 auto;
+        font-size: 0.8rem;
+        text-align: center;
+        text-transform: capitalize;
+        opacity: 1;
+        transition: all 0.5s ease 0s;
+      }
+    }
+
+    &:hover .mask {
+      bottom: 45%;
+    }
+
+    &:hover .mask > .title {
+      width: 100%;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.2rem;
+      background-color: #000;
+    }
+
+    &:hover .mask > .post {
+      width: 100%;
+      color: #fe9600;
+      font-size: 1rem;
+      background-color: #000;
     }
   }
 }
