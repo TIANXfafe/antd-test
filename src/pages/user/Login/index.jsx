@@ -115,7 +115,7 @@ const Login = () => {
               key="mobile"
               tab={intl.formatMessage({
                 id: 'pages.login.phoneLogin.tab',
-                defaultMessage: '手机号登录',
+                defaultMessage: '手机号',
               })}
             />
           </Tabs>
@@ -268,7 +268,7 @@ const Login = () => {
             }}
           >
             <ProFormCheckbox noStyle name="autoLogin">
-              <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
+              <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动" />
             </ProFormCheckbox>
             <a
               style={{

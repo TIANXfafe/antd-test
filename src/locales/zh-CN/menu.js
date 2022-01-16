@@ -52,4 +52,5 @@ export default {
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
   'menu.template': '模版',
+  // 'menu.createTemplate': '新建模板',
 };

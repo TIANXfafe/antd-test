@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import MainContent from '@/components/MainContent';
-import { Row, Col, Input, Button, DatePicker, Space } from 'antd';
-import { SearchOutlined, RedoOutlined } from '@ant-design/icons';
+import { history } from 'umi';
+import { Row, Col, Input, Button, DatePicker, Space, Divider } from 'antd';
+import { SearchOutlined, RedoOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useWindowSize } from '@/utils/utils';
 import styles from './index.less';
 
@@ -64,25 +65,51 @@ function Template(props) {
     setContainerHeight(templateContainer.current.clientWidth * 1.4);
   }, [windowSize]);
 
+  /**
+   * 跳转至新建页
+   */
+  const handleJumpCreate = () => {
+    history.push('/create-template');
+  };
+
+  /**
+   * 跳转至模板详情页
+   * @param id 模板id
+   */
+  const handleJumpDetail = (id) => {
+    history.push(`/test/test-page?id=${id}`);
+  };
+
   return (
     <MainContent>
       <Row className={styles.titleContainer}>
-        <div className={styles.titleContent}>
+        <Col className={styles.titleContent} xs={24} md={12} xl={8} xxl={6}>
           <div className={styles.searchTitle}>模板名称</div>
           <Input placeholder="请输入名称" style={{ width: '288px' }} />
-        </div>
-        <div className={styles.titleContent}>
+        </Col>
+        <Col className={styles.titleContent} xs={24} md={12} xl={8} xxl={6}>
           <div className={styles.searchTitle}>创建时间</div>
           <RangePicker />
-        </div>
-        <div className={styles.titleContent}>
+        </Col>
+        <Col className={styles.btnContent} xs={24} md={12} xl={8} xxl={{ span: 3, offset: 9 }}>
           <Space size="small">
             <Button type="primary" icon={<SearchOutlined />}>
               搜索
             </Button>
             <Button icon={<RedoOutlined />}>重置</Button>
           </Space>
-        </div>
+        </Col>
+      </Row>
+      <Divider />
+      <Row>
+        <Space size="small">
+          <Button type="primary" icon={<EditOutlined />} onClick={handleJumpCreate}>
+            新建
+          </Button>
+          <Button type="primary" danger icon={<DeleteOutlined />}>
+            批量删除
+          </Button>
+        </Space>
       </Row>
       <Row>
         {templateList.map((item) => {
@@ -91,19 +118,20 @@ function Template(props) {
               xs={12}
               md={8}
               xl={6}
-              xxl={4}
+              xxl={3}
               className={styles.templateContainer}
               style={{ height: containerHeight + 'px' }}
               ref={templateContainer}
               key={item.id}
             >
-              <a className={styles.templateItem} href={item.url}>
+              <div className={styles.templateItem} onClick={() => handleJumpDetail(item.id)}>
                 <img src={item.imgUrl} alt="" />
                 <div className={styles.mask}>
                   <div className={styles.title}>{item.name}</div>
                   <div className={styles.post}>{item.time}</div>
+                  {/*<DeleteOutlined />*/}
                 </div>
-              </a>
+              </div>
             </Col>
           );
         })}

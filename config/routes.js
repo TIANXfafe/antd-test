@@ -62,6 +62,12 @@ export default [
     component: './Template',
   },
   {
+    path: '/create-template',
+    // name: 'createTemplate',
+    // icon: 'crown',
+    component: './CreateTemplate',
+  },
+  {
     name: 'list.table-list',
     icon: 'table',
     path: '/list',
