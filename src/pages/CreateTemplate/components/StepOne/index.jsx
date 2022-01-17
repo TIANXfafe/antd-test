@@ -7,10 +7,21 @@ import styles from './index.less';
 const { RangePicker } = DatePicker;
 
 function StepOne(props) {
-  const { pcExample, miniExample, pcExampleHeight, miniExampleHeight, changeStatus, isLock } =
-    props;
+  const {
+    pcExample,
+    miniExample,
+    pcExampleHeight,
+    miniExampleHeight,
+    changeType,
+    tempType,
+    changeStatus,
+    isLock,
+  } = props;
+  console.log('tempType', tempType);
 
   const changeLockStatus = (checked) => changeStatus(checked);
+
+  const changeTempType = (event) => changeType(event.target.value);
 
   return (
     <Row className={styles.firstStep}>
@@ -35,7 +46,7 @@ function StepOne(props) {
             name="templateType"
             rules={[{ required: true, message: '请选择模板类型!' }]}
           >
-            <Radio.Group>
+            <Radio.Group value={tempType} onChange={changeTempType}>
               <div className={styles.radioContent}>
                 <Radio value="pc">PC端</Radio>
                 <div

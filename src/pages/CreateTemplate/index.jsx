@@ -44,6 +44,8 @@ function CreateTemplate(props) {
   const [pcExampleHeight, setPcExampleHeight] = useState(0);
   // 小程序示例的高度
   const [miniExampleHeight, setMiniExampleHeight] = useState(0);
+  // 模版类型
+  const [tempType, setTempType] = useState('pc');
   // 是否锁定
   const [isLock, setIsLock] = useState(false);
 
@@ -72,7 +74,12 @@ function CreateTemplate(props) {
   };
 
   /**
-   * 是否锁定
+   * 切换模版类型
+   */
+  const changeType = (value) => setTempType(value);
+
+  /**
+   * 切换是否锁定
    */
   const changeStatus = (checked) => setIsLock(checked);
 
@@ -91,11 +98,13 @@ function CreateTemplate(props) {
             miniExample={miniExample}
             pcExampleHeight={pcExampleHeight}
             miniExampleHeight={miniExampleHeight}
+            tempType={tempType}
+            changeType={changeType}
             isLock={isLock}
             changeStatus={changeStatus}
           />
         ) : currentStep === 1 ? (
-          <div>456</div>
+          <div>{tempType === 'pc' ? <div>456</div> : <div>879</div>}</div>
         ) : (
           <div>789</div>
         )}
