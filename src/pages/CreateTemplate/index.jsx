@@ -1,31 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  Button,
-  Card,
-  Divider,
-  Space,
-  Steps,
-  Row,
-  Col,
-  Form,
-  Input,
-  DatePicker,
-  Radio,
-  Skeleton,
-  Switch,
-} from 'antd';
+import { Button, Card, Divider, Space, Steps, DatePicker, Popconfirm, message, Result } from 'antd';
 import {
   LogoutOutlined,
   ArrowLeftOutlined,
   ArrowRightOutlined,
   CheckOutlined,
-  CloseOutlined,
+  CloseCircleOutlined,
+  SmileOutlined,
 } from '@ant-design/icons';
 import { history } from 'umi';
 import { useWindowSize } from '@/utils/utils';
 import styles from './index.less';
 import StepOne from './components/StepOne';
-import classNames from 'classnames';
 
 const { Step } = Steps;
 const { RangePicker } = DatePicker;
@@ -83,8 +69,35 @@ function CreateTemplate(props) {
    */
   const changeStatus = (checked) => setIsLock(checked);
 
+  const confirm = () => {
+    history.goBack();
+    message.success('成功');
+  };
+
+  const cancel = () => {
+    message.warning('以取消');
+  };
+
+  const complete = () => history.push('/template');
+
   return (
     <Card>
+      {currentStep !== 2 ? (
+        <div className={styles.stepTitle}>
+          <Popconfirm
+            title="当前操作会清除所有未保存数据，是否确认离开?"
+            onConfirm={confirm}
+            onCancel={cancel}
+            okText="确定"
+            cancelText="取消"
+          >
+            <CloseCircleOutlined style={{ fontSize: '18px', color: '#bcbcbc' }} />
+          </Popconfirm>
+          ,
+        </div>
+      ) : (
+        <></>
+      )}
       <Steps current={currentStep} status="error">
         <Step />
         <Step />
@@ -106,26 +119,34 @@ function CreateTemplate(props) {
         ) : currentStep === 1 ? (
           <div>{tempType === 'pc' ? <div>456</div> : <div>879</div>}</div>
         ) : (
-          <div>789</div>
+          <Result
+            icon={<SmileOutlined />}
+            title="Great, we have done all the operations!"
+            extra={
+              <Button type="primary" onClick={complete}>
+                完成
+              </Button>
+            }
+          />
         )}
-        <div className={styles.btnContent}>
-          <Space size="small">
-            <Button
-              type={currentStep === 0 ? '' : 'primary'}
-              icon={currentStep === 0 ? <LogoutOutlined /> : <ArrowLeftOutlined />}
-              onClick={preStep}
-            >
-              {currentStep === 0 ? '取消' : '上一步'}
-            </Button>
-            <Button
-              type="primary"
-              icon={currentStep === 2 ? <CheckOutlined /> : <ArrowRightOutlined />}
-              onClick={nextStep}
-            >
-              {currentStep === 2 ? '完成' : '下一步'}
-            </Button>
-          </Space>
-        </div>
+        {currentStep !== 2 ? (
+          <div className={styles.btnContent}>
+            <Space size="small">
+              <Button
+                type={currentStep === 0 ? '' : 'primary'}
+                icon={currentStep === 0 ? <LogoutOutlined /> : <ArrowLeftOutlined />}
+                onClick={preStep}
+              >
+                {currentStep === 0 ? '取消' : '上一步'}
+              </Button>
+              <Button type="primary" icon={<ArrowRightOutlined />} onClick={nextStep}>
+                下一步
+              </Button>
+            </Space>
+          </div>
+        ) : (
+          <></>
+        )}
       </Card>
     </Card>
   );
