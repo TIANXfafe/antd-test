@@ -12,16 +12,19 @@ import {
   DatePicker,
   Radio,
   Skeleton,
+  Switch,
 } from 'antd';
 import {
   LogoutOutlined,
   ArrowLeftOutlined,
   ArrowRightOutlined,
   CheckOutlined,
+  CloseOutlined,
 } from '@ant-design/icons';
 import { history } from 'umi';
 import { useWindowSize } from '@/utils/utils';
 import styles from './index.less';
+import StepOne from './components/StepOne';
 import classNames from 'classnames';
 
 const { Step } = Steps;
@@ -41,6 +44,8 @@ function CreateTemplate(props) {
   const [pcExampleHeight, setPcExampleHeight] = useState(0);
   // 小程序示例的高度
   const [miniExampleHeight, setMiniExampleHeight] = useState(0);
+  // 是否锁定
+  const [isLock, setIsLock] = useState(false);
 
   /**
    * pc端示例、小程序示例高度随视窗大小变化
@@ -66,6 +71,11 @@ function CreateTemplate(props) {
     else setCurrentStep(currentStep + 1);
   };
 
+  /**
+   * 是否锁定
+   */
+  const changeStatus = (checked) => setIsLock(checked);
+
   return (
     <Card>
       <Steps current={currentStep} status="error">
@@ -76,67 +86,14 @@ function CreateTemplate(props) {
       <Divider />
       <Card>
         {currentStep === 0 ? (
-          <Row className={styles.firstStep}>
-            <Col xs={24} md={{ span: 12, offset: 6 }} xxl={{ span: 8, offset: 8 }}>
-              <Form layout="vertical">
-                <Form.Item
-                  label="模板名称"
-                  name="templateName"
-                  rules={[{ required: true, message: '请输入模板名称!' }]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  label="生效时间"
-                  name="effectiveTime"
-                  rules={[{ required: true, message: '请选择生效时间!' }]}
-                >
-                  <RangePicker />
-                </Form.Item>
-                <Form.Item
-                  label="模板类型"
-                  name="templateType"
-                  rules={[{ required: true, message: '请选择模板类型!' }]}
-                >
-                  <Radio.Group>
-                    <div className={classNames(styles.radioContent, styles.pcContent)}>
-                      <Radio value="pc">PC端</Radio>
-                      <div
-                        className={styles.typeContent}
-                        ref={pcExample}
-                        style={{ height: pcExampleHeight + 'px' }}
-                      >
-                        <div className={styles.pcTitle}>
-                          <span />
-                          <span />
-                          <span />
-                        </div>
-                        <div className={styles.pcBody}>
-                          <Skeleton active />
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.radioContent}>
-                      <Radio value="mini-program">小程序</Radio>
-                      <div
-                        className={classNames(styles.typeContent, styles.miniContent)}
-                        ref={miniExample}
-                        style={{ height: miniExampleHeight + 'px' }}
-                      >
-                        <div className={styles.miniTitle}>
-                          <span />
-                        </div>
-                        <div className={styles.miniBody}>
-                          <Skeleton active />
-                        </div>
-                      </div>
-                    </div>
-                    {/*<Radio value="andriod">item 3</Radio>*/}
-                  </Radio.Group>
-                </Form.Item>
-              </Form>
-            </Col>
-          </Row>
+          <StepOne
+            pcExample={pcExample}
+            miniExample={miniExample}
+            pcExampleHeight={pcExampleHeight}
+            miniExampleHeight={miniExampleHeight}
+            isLock={isLock}
+            changeStatus={changeStatus}
+          />
         ) : currentStep === 1 ? (
           <div>456</div>
         ) : (
