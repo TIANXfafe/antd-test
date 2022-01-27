@@ -19,6 +19,12 @@ export default [
     ],
   },
   {
+    path: '/dashboard',
+    name: 'dashboard',
+    icon: 'DashboardOutlined',
+    component: './Dashboard',
+  },
+  {
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',
@@ -75,7 +81,7 @@ export default [
   },
   {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/dashboard',
   },
   {
     component: './404',

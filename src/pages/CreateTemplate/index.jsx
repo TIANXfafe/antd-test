@@ -112,8 +112,8 @@ function CreateTemplate(props) {
             pcExampleHeight={pcExampleHeight}
             miniExampleHeight={miniExampleHeight}
             tempType={tempType}
-            changeType={changeType}
             isLock={isLock}
+            changeType={changeType}
             changeStatus={changeStatus}
           />
         ) : currentStep === 1 ? (
