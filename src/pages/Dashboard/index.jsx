@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Row, Col, Calendar, Badge } from 'antd';
 import moment from 'moment';
+import classNames from 'classnames';
 import MainContent from '@/components/MainContent';
 import styles from './index.less';
 
@@ -37,8 +38,14 @@ function Dashboard(props) {
     },
   ];
 
+  const leftRef = useRef(null);
+  const middleRef = useRef(null);
+  const rightRef = useRef(null);
+
   const [dailyData, setDailyData] = useState(data);
   const [flag, setFlag] = useState(false);
+  const [leftOffset, setLeftOffset] = useState(0);
+  const [mouseOffset, setMouseOffset] = useState(0);
 
   const getListData = (value) => {
     let listData;
@@ -100,6 +107,35 @@ function Dashboard(props) {
     console.log('vvv', moment(value.format('YYYY-MM-DD')).format('x'));
     setFlag(!flag);
   };
+  const touchStart = (e) => {
+    setLeftOffset(e.changedTouches[0].clientX);
+  };
+
+  const touchEnd = (e) => {
+    const subX = e.changedTouches[0].clientX - leftOffset;
+    if (subX > 50) {
+      console.log('右滑');
+    } else if (subX < -50) {
+      console.log('左滑');
+    } else {
+      console.log('无效');
+    }
+  };
+
+  const mouseDown = (e) => {
+    setMouseOffset(e.clientX);
+  };
+
+  const mouseUp = (e) => {
+    const subX = e.clientX - mouseOffset;
+    if (subX > 50) {
+      console.log('右滑');
+    } else if (subX < -50) {
+      console.log('左滑');
+    } else {
+      console.log('无效');
+    }
+  };
 
   return (
     <MainContent>
@@ -114,8 +150,26 @@ function Dashboard(props) {
         <Col sm={24} md={0}>
           <Calendar fullscreen={false} onSelect={onSelect} />
         </Col>
-        <div className={styles.DetailContent} style={{ display: flag ? 'block' : 'none' }}>
-          123
+        <div className={classNames(styles.mask, flag ? styles.show : styles.hidden)}>
+          <div
+            className={classNames(
+              styles.DetailContent,
+              flag ? styles.detailShow : styles.detailHidden,
+            )}
+          >
+            <div
+              className={styles.detailList}
+              onTouchStart={touchStart}
+              onTouchEnd={touchEnd}
+              onMouseDown={mouseDown}
+              onMouseUp={mouseUp}
+              style={{ backgroundColor: 'green' }}
+            >
+              <div className={classNames(styles.detailItem, styles.left)}>1</div>
+              <div className={classNames(styles.detailItem, styles.middle)}>2</div>
+              <div className={classNames(styles.detailItem, styles.right)}>3</div>
+            </div>
+          </div>
         </div>
       </Row>
     </MainContent>
