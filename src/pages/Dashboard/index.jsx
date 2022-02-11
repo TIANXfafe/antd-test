@@ -1,13 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Row, Col, Calendar, Badge } from 'antd';
 import moment from 'moment';
 import classNames from 'classnames';
 import MainContent from '@/components/MainContent';
 import styles from './index.less';
+import { useWindowSize } from '@/utils/utils';
 
 function Dashboard(props) {
-  const startTime = 1640966400000;
-  const endTime = 1643644799000;
+  const windowSize = useWindowSize();
+
   const data = [
     /**
      * type:
@@ -37,15 +38,51 @@ function Dashboard(props) {
       ],
     },
   ];
+  const data1 = [
+    {
+      id: 1,
+      data: 1,
+    },
+    {
+      id: 2,
+      data: 2,
+    },
+    {
+      id: 3,
+      data: 3,
+    },
+    {
+      id: 4,
+      data: 4,
+    },
+    {
+      id: 5,
+      data: 1,
+    },
+  ];
 
-  const leftRef = useRef(null);
-  const middleRef = useRef(null);
-  const rightRef = useRef(null);
+  const baseBoxRef = useRef();
 
+  // 每个日期数据
   const [dailyData, setDailyData] = useState(data);
+  // 遮罩层轮播图数据
+  const [maskData, setMaskData] = useState(data1);
+  // 是否显示遮罩层
   const [flag, setFlag] = useState(false);
+  // 轮播图总宽度
+  const [carouselWidth, setCarouselWidth] = useState(0);
+  // 轮播图偏移量
+  const [carouselOffset, setCarouselOffset] = useState(0);
+  // 初始在中间的index
+  const [originActive, setOriginActive] = useState(1);
+
   const [leftOffset, setLeftOffset] = useState(0);
   const [mouseOffset, setMouseOffset] = useState(0);
+
+  useEffect(() => {
+    setCarouselWidth(baseBoxRef.current.offsetWidth);
+    setCarouselOffset(-baseBoxRef.current.offsetWidth * 0.6);
+  }, [windowSize]);
 
   const getListData = (value) => {
     let listData;
@@ -103,35 +140,55 @@ function Dashboard(props) {
     ) : null;
   };
 
+  /**
+   * 日期点击事件
+   * @param value
+   */
   const onSelect = (value) => {
     console.log('vvv', moment(value.format('YYYY-MM-DD')).format('x'));
     setFlag(!flag);
   };
+
   const touchStart = (e) => {
     setLeftOffset(e.changedTouches[0].clientX);
   };
-
   const touchEnd = (e) => {
     const subX = e.changedTouches[0].clientX - leftOffset;
     if (subX > 50) {
       console.log('右滑');
+      const originOffset = carouselOffset;
+      setCarouselOffset(originOffset - -baseBoxRef.current.offsetWidth * 0.7);
     } else if (subX < -50) {
       console.log('左滑');
+      const originOffset = carouselOffset;
+      setCarouselOffset(originOffset + -baseBoxRef.current.offsetWidth * 0.7);
     } else {
       console.log('无效');
     }
   };
-
   const mouseDown = (e) => {
     setMouseOffset(e.clientX);
   };
-
   const mouseUp = (e) => {
     const subX = e.clientX - mouseOffset;
     if (subX > 50) {
       console.log('右滑');
+      const originOffset = carouselOffset;
+      const originIndex = originActive;
+      setCarouselOffset(originOffset - -baseBoxRef.current.offsetWidth * 0.7);
+      setOriginActive(originIndex - 1);
     } else if (subX < -50) {
       console.log('左滑');
+      const originOffset = carouselOffset;
+      const originIndex = originActive;
+      if (originIndex > 0 && originIndex < 3) {
+        setCarouselOffset(originOffset + -baseBoxRef.current.offsetWidth * 0.7);
+        setOriginActive(originIndex + 1);
+      } else {
+        console.log('11');
+        setCarouselOffset(-baseBoxRef.current.offsetWidth * 0.6);
+        setOriginActive(1);
+      }
     } else {
       console.log('无效');
     }
@@ -150,25 +207,40 @@ function Dashboard(props) {
         <Col sm={24} md={0}>
           <Calendar fullscreen={false} onSelect={onSelect} />
         </Col>
-        <div className={classNames(styles.mask, flag ? styles.show : styles.hidden)}>
+        <div
+          className={classNames(styles.mask, flag ? styles.show : styles.hidden)}
+          ref={baseBoxRef}
+        >
           <div
-            className={classNames(
-              styles.DetailContent,
-              flag ? styles.detailShow : styles.detailHidden,
-            )}
+            className={styles.carouselContent}
+            style={{ width: `${carouselWidth * 0.7 * 5}px` }}
+            onTouchStart={touchStart}
+            onTouchEnd={touchEnd}
+            onMouseDown={mouseDown}
+            onMouseUp={mouseUp}
           >
-            <div
-              className={styles.detailList}
-              onTouchStart={touchStart}
-              onTouchEnd={touchEnd}
-              onMouseDown={mouseDown}
-              onMouseUp={mouseUp}
-              style={{ backgroundColor: 'green' }}
-            >
-              <div className={classNames(styles.detailItem, styles.left)}>1</div>
-              <div className={classNames(styles.detailItem, styles.middle)}>2</div>
-              <div className={classNames(styles.detailItem, styles.right)}>3</div>
-            </div>
+            {maskData.map((item, index) => {
+              return (
+                <div
+                  className={styles.carouselItem}
+                  key={item.id}
+                  style={{
+                    width: `${carouselWidth * 0.6}px`,
+                    marginLeft: `${carouselWidth * 0.1}px`,
+                    transform: `translateX(${carouselOffset}px)`,
+                  }}
+                >
+                  <div
+                    className={classNames(
+                      styles.carouselMaintain,
+                      index === originActive ? styles.active : '',
+                    )}
+                  >
+                    {item.data}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </Row>
